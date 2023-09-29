@@ -66,13 +66,49 @@ public class DishServiceImpl implements DishService {
 
         List<Long> setmealIds = setmealDishMapper.getSetmealIdByDishIds(ids);
         if (!setmealIds.isEmpty()){throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);}
-        for (Long id : ids) {
-            dishMapper.deleteById(id);
-            dishFlavorMapper.deleteByDishId(id);
+//        for (Long id : ids) {
+//            dishMapper.deleteById(id);
+//            dishFlavorMapper.deleteByDishId(id);
+//        }
+        dishMapper.deleteBatch(ids);
+        dishFlavorMapper.deleteDishIdBatch(ids);
+    }
+
+    @Override
+    public DishVO getByIdWithFlavor(Long id) {
+        Dish dish = dishMapper.getById(id);
+        List<DishFlavor> dishFlavors=dishFlavorMapper.getByDishId(id);
+        DishVO dishVO=new DishVO();
+        BeanUtils.copyProperties(dish,dishVO);
+        dishVO.setFlavors(dishFlavors);
+        return dishVO;
+    }
+
+    @Override
+    public void updateWithFlavor(DishDTO dishDTO) {
+        Dish dish=new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+        dishMapper.update(dish);
+        dishFlavorMapper.deleteByDishId(dishDTO.getId());
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if (flavors!=null && flavors.size()>0){
+            flavors.forEach(dishFlavor -> dishFlavor.setDishId(dishDTO.getId()));
+            dishFlavorMapper.insertBatch(flavors);
         }
+    }
 
+    @Override
+    public List<Dish> listDishByCategoryId(Long categoryId) {
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.list(dish);
+    }
 
-
+    @Override
+    public void setStatus(Long status, Long id) {
+        dishMapper.setStatus(status,id);
     }
 
 

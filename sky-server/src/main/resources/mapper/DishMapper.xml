@@ -7,6 +7,12 @@
         VALUES(#{id},#{name},#{categoryId},#{price},#{image},#{description},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})
 
     </insert>
+    <delete id="deleteBatch">
+        delete from dish where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
         SELECT d.*,c.name AS categoryName FROM dish d  LEFT JOIN category c ON d.category_id=c.id
         <where>
@@ -22,4 +28,32 @@
         </where>
     order by d.create_time desc
     </select>
+    <select id="list" resultType="com.sky.entity.Dish">
+        select * from dish
+<where>
+    <if test="name != null">
+        and name like concat('%',#{name},'%')
+    </if>
+    <if test="categoryId != null">
+        and category_id = #{categoryId}
+    </if>
+    <if test="status != null">
+        and status = #{status}
+    </if>
+</where>
+    </select>
+    <update id="update">
+        update dish
+    <set>
+        <if test="name!=null">name=#{name},</if>
+        <if test="categoryId!=null">category_id=#{categoryId},</if>
+        <if test="price!=null">price=#{price},</if>
+        <if test="image!=null">image=#{image},</if>
+        <if test="description!=null">description=#{description},</if>
+        <if test="status!=null">status=#{status},</if>
+        <if test="updateTime!=null">update_time=#{updateTime},</if>
+        <if test="updateUser!=null">update_user=#{updateUser},</if>
+    </set>
+        where id=#{id}
+    </update>
 </mapper>
