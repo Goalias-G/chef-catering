@@ -11,3 +11,8 @@ sky:
     access-key-id: LTAI5tRqNf5HmrE8iT24br6J
     access-key-secret: qSg26ZQHcMbHK0NH2SUzOP1E3VgdwH
     bucket-name: waimai-7758
+  redis:
+    host: 192.168.242.128
+    port: 6379
+    password: 111111
+    database: 0
