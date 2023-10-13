@@ -77,11 +77,12 @@ public class HttpClientUtil {
      * 发送POST方式请求
      * @param url
      * @param paramMap
-     * @return
+     * @return String
      * @throws IOException
      */
     public static String doPost(String url, Map<String, String> paramMap) throws IOException {
         // 创建Httpclient对象
+
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         String resultString = "";
