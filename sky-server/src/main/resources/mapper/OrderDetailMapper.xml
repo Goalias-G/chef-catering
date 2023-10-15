@@ -11,4 +11,5 @@
                 (#{para.name},#{para.image},#{para.orderId},#{para.dishId},#{para.setmealId},#{para.dishFlavor},#{para.number},#{para.amount})
             </foreach>
     </insert>
+
 </mapper>
