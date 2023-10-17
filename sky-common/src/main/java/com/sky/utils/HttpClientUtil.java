@@ -1,6 +1,7 @@
 package com.sky.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -15,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -172,6 +174,7 @@ public class HttpClientUtil {
     }
     private static RequestConfig builderRequestConfig() {
         return RequestConfig.custom()
+                //.setProxy(new HttpHost("127.0.0.1",7890))
                 .setConnectTimeout(TIMEOUT_MSEC)
                 .setConnectionRequestTimeout(TIMEOUT_MSEC)
                 .setSocketTimeout(TIMEOUT_MSEC).build();
